@@ -14,10 +14,16 @@ app = FastAPI()
 async def hello():
     return {"Hello": "World"}
 
+
 @app.post("/game", response_model=schemas.GameSchema)
 async def create_game(db: Session = Depends(get_db)):
     game_to_create = models.Game()
     db.add(game_to_create)
     db.commit()
     db.refresh(game_to_create)
+
+    move_to_create = models.Move(game_id=game_to_create.id)
+    db.add(move_to_create)
+    db.commit()
+
     return game_to_create
