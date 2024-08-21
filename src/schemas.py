@@ -1,11 +1,13 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel, validator, ValidationError
+from pydantic import BaseModel, field_validator
 
 
 class GameSchema(BaseModel):
     id: int
+    winner: Optional[str] = None
+    modified_at: datetime
 
 
 class Move(BaseModel):
@@ -26,7 +28,7 @@ class PlayerMove(BaseModel):
     x: int
     y: int
 
-    @validator("x", "y")
+    @field_validator("x", "y")
     def check_range(cls, value):
         if not (0 <= value <= 2):
             raise ValueError("You miss the board. Position must be between 0 and 2")
