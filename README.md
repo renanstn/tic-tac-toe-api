@@ -37,6 +37,12 @@ API will be available at:
 ## Considerations and issues
 
 - All machine movements are randoms
+- Due to restrict challenge time (4 hours), some improvements were left to do, like:
+  - Broke the `make_move` handler in small functions
+  - More consistent names for schemas
+  - Unit tests
+  - Reduce repetition
+  - A better README
 
 ## Shell commands for tests
 
