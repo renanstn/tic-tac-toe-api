@@ -27,3 +27,14 @@ async def create_game(db: Session = Depends(get_db)):
     db.commit()
 
     return game_to_create
+
+@app.get("/game/{game_id}", response_model=schemas.GameHistory)
+async def get_game_history(game_id: int, db: Session = Depends(get_db)):
+    game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if not game:
+        return {"message": f"Game id '{game_id}' not found."}
+
+    moves = db.query(models.Move).filter(models.Move.game_id == game.id).order_by(models.Move.modified_at.asc()).all()
+    move_schemas = [schemas.Move.from_orm(move) for move in moves]
+
+    return schemas.GameHistory(history=move_schemas)
