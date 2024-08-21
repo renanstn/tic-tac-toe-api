@@ -43,6 +43,7 @@ API will be available at:
   - Unit tests
   - Reduce repetition
   - A better README
+  - Docstrings for all functions
 
 ## Shell commands for tests
 
