@@ -34,6 +34,10 @@ API will be available at:
 
 `http://localhost:8000`
 
+## Considerations and issues
+
+- All machine movements are randoms
+
 ## Shell commands for tests
 
 ### Create a new game
