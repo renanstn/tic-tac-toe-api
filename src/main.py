@@ -106,6 +106,8 @@ async def make_move(
 
     # Check game draw
     if check_if_board_is_full(player_move.board):
+        game.winner = "draw"
+        db.commit()
         return {"message": "Draw game!"}
 
     # Machine movement
@@ -118,6 +120,8 @@ async def make_move(
         if board_for_machine_move[i][j] == "."
     ]
     if not free_positions:
+        game.winner = "draw"
+        db.commit()
         return {"message": "Draw game!"}
     # Randomize machine play
     i, j = random.choice(free_positions)
