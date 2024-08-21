@@ -4,21 +4,39 @@
 
 > :clock10: Start at: 10:00AM
 
-> Pause between: 12:10PM and 1:00PM
+> ☕ Pause between: 12:10PM and 1:00PM
 
-> Finish at: 2:40PM
+> 🕒 Finish at: 2:55PM
 
 ## Description
 
-TODO
+This is the technical test from Ethyca company for Python developer position.
 
-## Setup project
+You can find the challenge description [here](https://github.com/ethyca/python-takehome-2).
 
-TODO
+## How to run
+
+> 🐳 Requires [Docker](https://www.docker.com/products/docker-desktop/) and docker compose
+
+Init database with
+
+```sh
+docker compose up -d db
+```
+
+Init API with
+
+```sh
+docker compose up api
+```
+
+API will be available at:
+
+`http://localhost:8000`
 
 ## Shell commands for tests
 
-### Create game
+### Create a new game
 
 ```sh
 curl -X POST http://localhost:8000/game -H "Content-Type: application/json" -d '{}'
