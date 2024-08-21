@@ -1,11 +1,13 @@
 import random
+from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+
 import models, schemas
 from database import engine, get_db
-from utils import check_victory
+from utils import check_victory, check_if_board_is_full
 
 
 # Create database models if not exist
@@ -32,12 +34,17 @@ async def create_game(db: Session = Depends(get_db)):
     return game_to_create
 
 
+@app.get("/games", response_model=List[schemas.GameSchema])
+async def get_all_games(db: Session = Depends(get_db)):
+    games = db.query(models.Game).order_by(models.Game.modified_at.asc()).all()
+    return games
+
+
 @app.get("/game/{game_id}", response_model=schemas.GameHistory)
 async def get_game_history(game_id: int, db: Session = Depends(get_db)):
     game = db.query(models.Game).filter(models.Game.id == game_id).first()
     if not game:
         raise HTTPException(status_code=404, detail=f"Game id '{game_id}' not found.")
-
     moves = (
         db.query(models.Move)
         .filter(models.Move.game_id == game.id)
@@ -45,7 +52,6 @@ async def get_game_history(game_id: int, db: Session = Depends(get_db)):
         .all()
     )
     move_schemas = [schemas.Move.from_orm(move) for move in moves]
-
     return schemas.GameHistory(history=move_schemas)
 
 
@@ -96,9 +102,13 @@ async def make_move(
     if check_victory(player_move.board, "X"):
         game.winner = "player"
         db.commit()
-        return {"message": "you win!"}
+        return {"message": "Congratulations, you win!"}
 
-    # Made machine movement
+    # Check game draw
+    if check_if_board_is_full(player_move.board):
+        return {"message": "Draw game!"}
+
+    # Machine movement
     board_for_machine_move = player_move.board
     # Find free positions on board
     free_positions = [
@@ -108,8 +118,8 @@ async def make_move(
         if board_for_machine_move[i][j] == "."
     ]
     if not free_positions:
-        raise HTTPException(status_code=404, detail="Draw game!")
-    # Machine play
+        return {"message": "Draw game!"}
+    # Randomize machine play
     i, j = random.choice(free_positions)
     board_for_machine_move[i][j] = "O"
 
@@ -123,6 +133,6 @@ async def make_move(
     if check_victory(machine_move.board, "O"):
         game.winner = "machine"
         db.commit()
-        return {"message": "you loose!"}
+        return {"message": "You loose!"}
 
     return {"board": machine_move.board}

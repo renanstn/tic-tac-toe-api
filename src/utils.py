@@ -17,3 +17,10 @@ def check_victory(table: list, player: str) -> bool:
         return True
 
     return False
+
+
+def check_if_board_is_full(table: list) -> bool:
+    for row in table:
+        if "." in row:
+            return False
+    return True
