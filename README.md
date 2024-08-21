@@ -6,7 +6,7 @@
 
 > ☕ Pause between: 12:10PM and 1:00PM
 
-> 🕒 Finish at: 2:55PM
+> 🕒 Finish at: 3:00PM
 
 ## Description
 
