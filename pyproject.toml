@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "tic-tac-toe-api"
+version = "0.1.0"
+description = ""
+authors = ["Renan Santana"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.112.1"
+uvicorn = "^0.30.6"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
