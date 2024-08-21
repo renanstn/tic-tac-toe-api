@@ -11,7 +11,7 @@ class Game(Base):
     __tablename__ = "game"
 
     id = Column(Integer, primary_key=True, index=True)
-    finished = Column(Boolean, default=False)
+    winner = Column(String, nullable=True)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     modified_at = Column(
         DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
