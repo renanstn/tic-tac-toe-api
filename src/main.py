@@ -1,10 +1,15 @@
-from typing import Union
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 
-from fastapi import FastAPI
+import models
+from database import engine, get_db
 
+
+# Create models if not exist
+models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
+def hello():
     return {"Hello": "World"}
